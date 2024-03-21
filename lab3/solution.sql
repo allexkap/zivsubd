@@ -8,9 +8,9 @@ create table summary (
     total integer
 );
 
-create or replace function aggreg() returns void as $$
+create or replace procedure aggreg() as $$
 begin
-    delete from summary;
+    delete from summary; -- doubtful but okay
     with tmp as (select name, sum(value) as total from transactions group by name)
         insert into summary select * from tmp order by total desc;
 end
@@ -20,7 +20,7 @@ $$ language plpgsql;
 -- 2 --
 create or replace function transactions_trigger() returns trigger as $$
 begin
-    perform * from aggreg();
+    call aggreg();
     return new;
 end
 $$ language plpgsql;
@@ -84,18 +84,32 @@ execute procedure replace_trigger();
 create table golden (
     value integer
 );
+create temp table golden_pos (
+    value integer
+);
 
 create or replace function golden_sum() returns integer as $$
 declare
+    phi float;
+    pos integer;
     size integer;
-    index integer;
 begin
-    size := (select count(*) from golden);
-    index := size / ((1 + sqrt(5)) / 2);
+    phi := (1 + sqrt(5)) / 2;
+    pos := 1;
+    truncate table golden_pos;
+    select count(*) into size from golden;
+    loop
+        insert into golden_pos values (pos);
+        pos := pos * phi;
+        if pos > size then
+            insert into golden_pos values (size);
+            exit;
+        end if;
+    end loop;
     return (
         select sum(value) from (
-            select row_number() over() as pos, * from golden
-        ) where pos = index+1 or pos = size-index
+            select row_number() over() as i, * from golden
+        ) where i in (select * from golden_pos)
     );
 end
 $$ language plpgsql;
