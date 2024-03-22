@@ -1,5 +1,5 @@
 -- 2 --
-update n33491_410_schema_lab1.n33491_410_p2k set c2='3' where i0 < (select avg(c0) from n33491_410_schema_lab1.n33491_410_check);
+update n33491_410_schema_lab1.n33491_410_p2k set c2='3' where c0 < (select avg(c0) from n33491_410_schema_lab1.n33491_410_check);
 
 -- 3 --
 delete from n33491_410_schema_lab1.n33491_410_check where c2 in (select c2 from n33491_410_schema_lab1.n33491_410_table_i5 where c0<3);
@@ -28,11 +28,7 @@ select * from n33491_410_schema_lab1.n33491_410_table_i5 order by c0 asc;
 -- 10 -- 
 select * from n33491_410_schema_lab1.n33491_410_table_i5 order by c0 desc limit 4;
 
--- 11.2 --
-insert into n33491_410_schema_lab1.n33491_410_check values (6, '52', '6', '05-05-5555', '05-05-5555', '/x55555555');
-insert into n33491_410_schema_lab1.n33491_410_check values (4, '55', '7', '05-05-5555', '05-05-5555', '/x55555555');
-insert into n33491_410_schema_lab1.n33491_410_check values (5, '53', '5', '05-05-5555', '05-05-5555', '/x55555555');
-insert into n33491_410_schema_lab1.n33491_410_check values (7, '55', '8', '05-05-5555', '05-05-5555', '/x55555555');
+-- 11 --
 select sum(c0), c4 from n33491_410_schema_lab1.n33491_410_check group by c4;
 
 -- 12 --
