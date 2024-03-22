@@ -8,7 +8,7 @@ delete from n33491_410_schema_lab1.n33491_410_check where c2 in (select c2 from 
 select c0, c2, c3 from n33491_410_schema_lab1.n33491_410_table_i5;
 
 -- 5 --
-select * from n33491_410_schema_lab1.n33491_410_table_c5 where c0<3;
+select * from n33491_410_schema_lab1.n33491_410_table_i5 where c0<3;
 
 -- 6 --
 select * from n33491_410_schema_lab1.n33491_410_unique, n33491_410_schema_lab1.n33491_410_p2k;
