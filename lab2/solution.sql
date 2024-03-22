@@ -1,5 +1,5 @@
 -- 2 --
-update n33491_410_schema_lab1.n33491_410_p2k set c2='3' where i0 < (select avg(i0) from n33491_410_schema_lab1.n33491_410_check);
+update n33491_410_schema_lab1.n33491_410_p2k set c2='3' where i0 < (select avg(c0) from n33491_410_schema_lab1.n33491_410_check);
 
 -- 3 --
 delete from n33491_410_schema_lab1.n33491_410_check where c2 in (select c2 from n33491_410_schema_lab1.n33491_410_table_i5 where c0<3);
