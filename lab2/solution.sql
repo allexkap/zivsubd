@@ -29,7 +29,7 @@ select * from n33491_410_schema_lab1.n33491_410_table_i5 order by c0 asc;
 select * from n33491_410_schema_lab1.n33491_410_table_i5 order by c0 desc limit 4;
 
 -- 11 --
-select sum(c0), c4 from n33491_410_schema_lab1.n33491_410_check group by c4;
+select sum(c0), c5 from n33491_410_schema_lab1.n33491_410_check group by c5;
 
 -- 12 --
-with t1 as (select sum(c0) as c0, c4 from n33491_410_schema_lab1.n33491_410_check group by c4) select * from t1 where c0 > 2;
+with t1 as (select sum(c0) as c0, c5 from n33491_410_schema_lab1.n33491_410_check group by c5) select * from t1 where c0 > 2;
