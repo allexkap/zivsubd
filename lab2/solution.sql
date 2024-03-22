@@ -14,7 +14,7 @@ select * from n33491_410_schema_lab1.n33491_410_table_c5 where c0<3;
 select * from n33491_410_schema_lab1.n33491_410_unique, n33491_410_schema_lab1.n33491_410_p2k;
 
 -- 7 --
-select * from n33491_410_schema_lab1.n33491_410_check where c2 cn (select c2 from n33491_410_schema_lab1.n33491_410_table_i5 where c0<3);
+select * from n33491_410_schema_lab1.n33491_410_check where c2 in (select c2 from n33491_410_schema_lab1.n33491_410_table_i5 where c0<3);
 
 -- 8 --
 select sum(c0) from n33491_410_schema_lab1.n33491_410_check;
