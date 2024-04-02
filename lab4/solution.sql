@@ -41,5 +41,28 @@ order by tbl1.key;
 -- 7 --
 grant select on tbl to user1;
 alter table tbl enable row level security;
-create policy key_policy on tbl for all to user1 using (key > 5);
+create policy key_policy on tbl for all to user1 using (key < 5);
 -- current_role?
+
+-- 8 --
+create function logging() returns trigger as $$
+declare
+    info varchar;
+begin
+    case lower(tg_op)
+        when 'insert' then info = new;
+        when 'update' then info = old || ' -> ' || new;
+        when 'delete' then info = old;
+    else
+        return new;
+    end case;
+    raise notice '%: %.% % by %: %', tg_name, tg_table_schema, tg_table_name, tg_op, current_role, info;
+    return new;
+end
+$$ language plpgsql;
+
+create trigger log_trigger
+before insert or update or delete
+on tbl
+for each row
+execute procedure logging();
