@@ -8,7 +8,7 @@ create table summary (
     total integer
 );
 
-create or replace procedure aggreg() as $$
+create procedure aggreg() as $$
 begin
     delete from summary; -- doubtful but okay
     with tmp as (select name, sum(value) as total from transactions group by name)
@@ -18,7 +18,7 @@ $$ language plpgsql;
 
 
 -- 2 --
-create or replace function transactions_trigger() returns trigger as $$
+create function transactions_trigger() returns trigger as $$
 begin
     call aggreg();
     return new;
@@ -37,17 +37,17 @@ create table year24 (id int, ts date);
 create view dates as
 select * from year23 union select * from year24;
 
-create or replace function dates_trigger() returns trigger as $$
+create function dates_trigger() returns trigger as $$
 declare
     tmp int;
 begin
-    tmp := extract(YEAR from NEW.ts);
+    tmp := extract(year from new.ts);
     if tmp = 2024 then
-        insert into year24 values (NEW.id, NEW.ts);
+        insert into year24 values (new.id, new.ts);
     elsif tmp = 2023 then
-        insert into year23 values (NEW.id, NEW.ts);
+        insert into year23 values (new.id, new.ts);
     end if;
-    return NEW;
+    return new;
 end
 $$ language plpgsql;
 
@@ -67,14 +67,14 @@ create table digits (
     value varchar
 );
 
-create or replace function replace_trigger() returns trigger as $$
+create function replace_trigger() returns trigger as $$
 begin
-    NEW.value := (select value from dict where (key = NEW.value));
-    return NEW;
+    new.value := (select value from dict where (key = new.value));
+    return new;
 end
 $$ language plpgsql;
 
-create or replace trigger replace_trigger
+create trigger replace_trigger
 before insert on digits
 for each row
 execute procedure replace_trigger();
@@ -88,7 +88,7 @@ create temp table golden_pos (
     value integer
 );
 
-create or replace function golden_sum() returns integer as $$
+create function golden_sum() returns integer as $$
 declare
     phi float;
     pos integer;
