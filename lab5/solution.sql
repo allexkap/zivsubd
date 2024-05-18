@@ -1,13 +1,13 @@
 -- 0 --
 create extension pgcrypto;
 
--- 1 --
 create table users (
     login bytea,
     pswd text,
     data bytea
 );
 
+-- 1 --
 insert into users values (
     digest('unbreakablelogin', 'sha1'),
     crypt('verystrongpassword', gen_salt('md5'))
